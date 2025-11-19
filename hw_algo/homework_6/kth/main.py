@@ -1,19 +1,22 @@
+import random
+
+
 def quickselect(arr, k):
-    if len(arr) <= 1:
-        return arr
+    if len(arr) == 1:
+        return arr[0]
 
-    pivot = len(arr) - 1
-    i, j = 0, 0
-    for j in range(len(arr)):
-        if arr[j] < arr[pivot]:
-            arr[i], arr[j] = arr[j], arr[i]
-            i += 1
+    pivot = random.choice(arr)
 
-    arr[i], arr[pivot] = arr[pivot], arr[i]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
 
-    if len(arr) - i + 1 == k:
-        return arr[i]
-    elif len(arr) - i + 1 < k:
-        return quickselect(arr[:i], k)
+    len_right = len(right)
+    len_middle = len(middle)
+
+    if k <= len_right:
+        return quickselect(right, k)
+    elif k <= len_right + len_middle:
+        return pivot
     else:
-        return quickselect(arr[i:], k)
+        return quickselect(left, k - len_right - len_middle)
